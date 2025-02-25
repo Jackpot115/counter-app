@@ -43,8 +43,8 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
     return {
       ...super.properties,
       count: { type: Number, reflect: true },
-      min: { type: Number },
-      max: { type: Number },
+      min: { type: Number, reflect: true },
+      max: { type: Number, reflect: true }, 
     };
   }
 
@@ -105,7 +105,6 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
       );
       if (this.count === 21) {
         this.makeItRain();
-
       }
     }
   }
@@ -136,8 +135,9 @@ makeItRain() {
   <confetti-container id="confetti">
   <div class="counter">${this.count}</div>
   <div class="buttons">
-    <button @click= "${this.decrease}" ?disabled="${this.count === this.min}">-</button>
-    <button @click= "${this.increase}" ?disabled="${this.count === this.max}">+</button>
+    <button @click="${this.decrease}" ?disabled="${this.count === this.min}">-</button>
+    <button @click="${this.reset}">Reset</button>
+    <button @click="${this.increase}" ?disabled="${this.count === this.max}">+</button>
   </div>
   </confetti-container>
 `;
@@ -151,9 +151,15 @@ makeItRain() {
     this.count--;
   }
   reset() {
-    this.count = 0;
+    this.count = this.min;
   }
-  
+
+  /** 
+  firstUpdated(changedProperties) {
+    super.firstUpdated(changedProperties);
+    this._counter = this.count;
+  }
+  */
   
   /**
    * haxProperties integration via file reference
